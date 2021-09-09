@@ -5,25 +5,7 @@
 @section('content')
 <div class="animated fadeIn">
     <!-- Widgets  -->
-    <div class="row">
-        <div class="col-lg-6 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="stat-widget-five">
-                        <div class="stat-icon dib flat-color-1">
-                            <i class="pe-7s-note2"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="text-left dib">
-                                <div class="stat-text"><span class="count">{{count($articles)}}</span></div>
-                                <div class="stat-heading">Jumlah Artikel</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
+    <div class="row"> 
         <div class="col-lg-6 col-md-6">
             <div class="card">
                 <div class="card-body">
@@ -63,8 +45,6 @@
                                         <th>Name</th>
                                         <th>Age</th>
                                         <th>Gender</th>
-                                        <th>Persona</th>
-                                        <th>Interest</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -76,19 +56,6 @@
                                         <td>{{$user->fullname}}</td>
                                         <td>{{$user->age}}</td>
                                         <td>{{$user->gender}}</td>
-                                        <td>{{$user->persona->name_persona}}</td>
-                                        <td>
-                                            <?php $myinterests = explode(',', $user->interest);?>
-                                            <ul>
-                                                @foreach ($myinterests as $interest)
-                                                @foreach ($interests as $a)
-                                                @if($a['id'] == $interest)
-                                                {{$interests[$interest-1]['title']}}
-                                                @endif
-                                                @endforeach 
-                                                @endforeach
-                                            </ul>
-                                        </td>
                                     </tr>
                                     @empty
                                     <tr>

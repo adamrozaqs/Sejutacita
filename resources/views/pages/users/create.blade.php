@@ -12,15 +12,6 @@
             @csrf
             {{-- <input type="hidden" name="id" value="id" class="form-control" required/> --}}
             <div class="form-group">
-                <label for="persona_id" class="form-control-label">Trait</label>
-                <select name="persona_id" class="form-control">
-                    <option selected disabled value="">Choose Your Trait</option>
-                        @foreach ($personas as $persona)
-                            <option value="{{$persona->id}}">{{$persona->name_persona}}</option>
-                        @endforeach
-                </select>
-            </div>
-            <div class="form-group">
                 <label for="fullname" class="form-control-label">Fullname</label>
                 <input type="text" name="fullname" value="{{old('fullname')}}" class="form-control" required/>
             </div>
@@ -48,25 +39,6 @@
                 <label for="age" class="form-control-label">Age</label>
                 <input type="number" min="15" max="100" name="age" value="{{old('age')}}" class="form-control" required/>
             </div>
-            <!-- <div class="form-group">
-                <label for="interest" class="form-control-label">Interest</label>
-                <select id='mySelect' class="form-control" multiple="yes" name="interest[]">
-                    <option disabled value="">Choose Your Interests</option>
-                        @foreach ($interests as $interest)
-                            <option value="{{$interest->id}}">{{ucfirst($interest->title)}}</option>
-                        @endforeach
-                </select>
-            </div> -->
-            <div class="form-group"> 
-                <label for="interest" class="form-control-label">Interest</label>
-                 <select id='mySelect' class="form-control" multiple="yes" name="interest[]">
-                  <option disabled value="">Choose Your Interests</option> 
-                  @foreach ($interests as $interest) 
-                  <option value="{{$interest->id}}">{{ucfirst($interest->title)}}</option> 
-                    @endforeach 
-                </select> 
-            </div> 
-
             <div class="form-group">
                 <button class="btn btn-primary btn-block" type="submit">Tambah User</button>
             </div>

@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Models\Persona;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,7 +14,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'uuid','id', 'fullname', 'username', 'email', 'password',
-        'gender', 'age', 'interest', 'persona_id'
+        'gender', 'age'
     ];
     
     protected $hidden = [
@@ -25,13 +24,5 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    function target() {
-        return $this->hasMany(Target::class, 'user_id', 'id');
-    }
-
-    function persona() {
-        return $this->belongsTo(Persona::class, 'persona_id', 'id');
-    }
 
 }

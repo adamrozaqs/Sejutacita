@@ -16,12 +16,10 @@
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Trait</th>
                                 <th>Fullname</th>
                                 <th>Username</th>
                                 <th>Gender</th>
                                 <th>Age</th>
-                                <th>Interest</th>
                                 <th>Email</th>
                                 <th>Action</th>
                             </tr>
@@ -30,24 +28,10 @@
                             <tr>
                                 @forelse ($users as $user)
                                 <td>{{$user->id}}</td>
-                                <td>{{$user->persona->name_persona}}</td>
                                 <td>{{$user->fullname}}</td>
                                 <td>{{$user->username}}</td>
                                 <td>{{$user->gender}}</td>
                                 <td>{{$user->age}}</td>
-                                <td>
-                                <?php $myinterests = explode(',', $user->interest);?>
-                                <ul>
-                                        @foreach ($myinterests as $interest)
-                                           @foreach ($interests as $a)
-                                               @if($a['id'] == $interest)
-                                                   <li>{{$interests[$interest-1]['title']}}</li>
-                                               @endif
-                                           @endforeach 
-                                        @endforeach
-                                </ul>
-                                </td>
-
                                 <td>{{$user->email}}</td>
                                 <td>
                                     <a href="{{route('user.edit', $user->id)}}" class="btn btn-primary btn-sm">

@@ -12,15 +12,6 @@
             @method('PUT')
             @csrf
             <div class="form-group">
-                <label for="persona_id" class="form-control-label">Trait</label>
-                <select name="persona_id" class="form-control">
-                    <option selected disabled value="">Choose Your Trait</option>
-                        @foreach ($personas as $persona)
-                            <option value="{{ $persona->id }}" {{ ( $persona->id == $user->persona_id) ? 'selected' : '' }}>{{$persona->name_persona}}</option>
-                        @endforeach
-                </select>
-            </div>
-            <div class="form-group">
                 <label for="fullname" class="form-control-label">Fullname</label>
                 <input type="text" name="fullname" value="{{old('fullname') ? old('fullname') : $user->fullname}}" class="form-control"/>
             </div>
@@ -48,16 +39,6 @@
                 <label for="age" class="form-control-label">Age</label>
                 <input type="number" min="15" max="100" name="age" value="{{old('age') ? old('age') : $user->age}}" class="form-control"/>
             </div>
-            <div class="form-group">
-                <label for="interest" class="form-control-label">Interest</label>
-                <select id='mySelect' class="form-control" multiple name="interest[]">
-                    <option disabled value="">Choose Your Interests</option>
-                        @foreach ($interests as $interest)
-                            <option value="{{$interest->id}}">{{ucfirst($interest->title)}}</option>
-                        @endforeach 
-                </select>
-            </div>
-
             <div class="form-group">
                 <button class="btn btn-primary btn-block" type="submit">Ubah User</button>
             </div>

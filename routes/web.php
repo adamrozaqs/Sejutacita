@@ -14,12 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['isLogged'])->group(function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
-    Route::resource('article', 'ArticleController');
     Route::resource('user', 'UserController');
-    Route::resource('interest', 'InterestController');
-    Route::resource('reminder', 'ReminderController');
-    Route::resource('quote', 'QuotesController');
-    Route::resource('target', 'TargetController');
     Route::resource('auth', 'AuthController');
 });
 Route::get('/login', 'AuthController@getLogin')->name('login');

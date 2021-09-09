@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Models\Persona;
-use App\Models\Interest;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Validator;
@@ -18,14 +16,11 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with(['persona'])->get();
-        $personas = Persona::all();
-        $interests = Interest::all();
+        $users = User::all();
 
         return view('pages.users.index')->with([
-            'users' => $users,
-            'personas' => $personas,
-            'interests' => $interests
+            'users' => $users
+
         ]);
     }
 
@@ -33,8 +28,8 @@ class UserController extends Controller
     {
         $tableName = "users";
         $result = DB::insert(
-            'insert into users (id,persona_id,fullname,username,gender,age,interest,email,password) values (?,?,?,?,?,?,?,?,?)',
-            [$request->input("id"),$request->input("persona_id"), $request->input("fullname"), $request->input("username"), $request->input("gender"), $request->input("age"), $request->input("interest"), $request->input("email"), bcrypt($request->input("password"))]
+            'insert into users (id,fullname,username,gender,age,email,password) values (?,?,?,?,?,?,?)',
+            [$request->input("id"), $request->input("fullname"), $request->input("username"), $request->input("gender"), $request->input("age"),  $request->input("email"), bcrypt($request->input("password"))]
         );
 
         return response([
@@ -49,20 +44,14 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        $personas = Persona::all();
-        $interests = Interest::all();
-
         return view('pages.users.create')->with([
-            'users' => $users,
-            'personas' => $personas,
-            'interests' => $interests
+            'users' => $users
         ]);
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['interest'] = implode(",", $data['interest']);
         $data['password'] = Hash::make('password', ['rounds' => 12]);
 
         User::create($data);
@@ -78,19 +67,9 @@ class UserController extends Controller
     {
         $users = User::all();
         $user = User::findOrFail($id);
-        // $userint = explode(',', $user->interest);
-        $personas = Persona::all();
-        $interests = Interest::all();
-
-        // dd($userint);
-        // dd($user->interest);
         return view('pages.users.edit')->with([
             'user' => $user,
-            'users' => $users,
-            // 'userint' => $userint,
-            // 'interestUid' => $interestUid,
-            'personas' => $personas,
-            'interests' => $interests
+            'users' => $users
         ]);
     }
 
@@ -102,8 +81,6 @@ class UserController extends Controller
         $password = $request->password;
         $gender = $request->gender;
         $age = $request->age;
-        $interest = $request->interest;
-        $persona_id = $request->persona_id;
 
         $request->getContent();
         $user = User::findOrFail($id);
@@ -125,12 +102,6 @@ class UserController extends Controller
         if ($age !== null) {
             $user->age = $age;
         }
-        if ($interest !== null) {
-            $user->interest = $interest;
-        }
-        if ($persona_id !== null) {
-            $user->persona_id = $persona_id;
-        }
         $user->save();
 
         return response([
@@ -144,7 +115,6 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        $data['interest'] = implode(",", $data['interest']);
 
         $user = User::findOrFail($id);
         $user->update($data);
