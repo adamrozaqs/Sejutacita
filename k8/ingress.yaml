@@ -20,7 +20,7 @@ spec:
 # tls:
 #   - hosts:
 #       - yourdomain.com
-#    secretName: yourdomain-com-tls
+#     secretName: yourdomain-com-tls
 # ---
 # apiVersion: certmanager.k8s.io/v1alpha1
 # kind: Certificate

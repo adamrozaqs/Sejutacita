@@ -18,6 +18,6 @@ data:
   DB_HOST: host
   DB_PASSWORD: password
   DB_PORT: "3306"
-  DB_USERNAME: root
+  DB_USERNAME: username
   REDIS_HOST: redis
   REDIS_PORT: "6379"

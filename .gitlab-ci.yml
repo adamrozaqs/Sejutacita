@@ -1,5 +1,5 @@
 variables:
-  DOCKER_DRIVER: "overlay2"
+  DOCKER_DRIVER: "adamrs25"
   REPOSITORY_URL: "https://gitlab.com/adamrozaqs/Sejutacita"
 stages:
   - build

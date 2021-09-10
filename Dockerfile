@@ -1,16 +1,51 @@
-ARG PHP_EXTENSIONS="apcu bcmath opcache pcntl pdo_mysql redis zip sockets imagick gd exif"
-FROM thecodingmachine/php:7.3-v2-slim-apache as php_base
-ENV TEMPLATE_PHP_INI=production
-COPY --chown=docker:docker . /var/www/html
-RUN composer install --quiet --optimize-autoloader --no-dev
-FROM node:10 as node_dependencies
-WORKDIR /var/www/html
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false
-COPY --from=php_base /var/www/html /var/www/html
-RUN npm set progress=false && \
-    npm config set depth 0 && \
-    npm install && \
-    npm run prod && \
-    rm -rf node_modules
-FROM php_base
-COPY --from=node_dependencies --chown=docker:docker /var/www/html /var/www/html
+FROM php:7.4-apache
+
+# Install packages
+RUN apt-get update && apt-get install -y \
+    git \
+    zip \
+    curl \
+    sudo \
+    unzip \
+    libicu-dev \
+    libbz2-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libmcrypt-dev \
+    libreadline-dev \
+    libfreetype6-dev \
+    g++
+
+# Apache configuration
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+RUN a2enmod rewrite headers
+
+# Common PHP Extensions
+RUN docker-php-ext-install \
+    bz2 \
+    intl \
+    iconv \
+    bcmath \
+    opcache \
+    calendar \
+    pdo_mysql
+
+# Ensure PHP logs are captured by the container
+ENV LOG_CHANNEL=stderr
+
+# Set a volume mount point for your code
+VOLUME /var/www/html
+
+# Copy code and run composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY . /var/www/tmp
+RUN cd /var/www/tmp && composer install --no-dev
+
+# Ensure the entrypoint file can be run
+RUN chmod +x /var/www/tmp/docker-entrypoint.sh
+ENTRYPOINT ["/var/www/tmp/docker-entrypoint.sh"]
+
+# The default apache run command
+CMD ["apache2-foreground"]
